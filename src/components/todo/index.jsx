@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
+import {TodosContext} from '../../context/todos-context';
 
 
 import { GoTrashcan, GoCheck } from 'react-icons/go';
@@ -8,14 +9,26 @@ import './styles.css'
 
 export const Todo = (props) => {
 
+    const todosContext = useContext(TodosContext);
+
     const [isComplete, setIsComplete] = useState(false);
 
+    //on init of component, when it first loads, grab the is complete property from the global state
     useEffect( () => {
         setIsComplete(props.isComplete)
-    }, [props.icComplete])
+    }, []);
+
+    useEffect( () => {
+        //everytime isComplete is updated, user clicks on the checkmark, call the below code
+        todosContext.updateTodo(props.todoId, isComplete);
+    }, [isComplete]);
 
     const toggleCompleteTodo = () => {
         setIsComplete (!isComplete);
+    }
+
+    const deleteTodo = () => {
+        todosContext.deleteTodo(props.todoId);
     }
 
     return (
@@ -30,7 +43,7 @@ export const Todo = (props) => {
           <button className="todo-complete" onClick={toggleCompleteTodo}>
               <GoCheck className="todo-icon" style={{ fontSize:"35px"}} />
           </button>
-          <button className="todo-delete">
+          <button className="todo-delete" onClick={deleteTodo}>
              <GoTrashcan className="todo-icon" style={{ fontsize: "35px"}} />
           </button>
           </div>

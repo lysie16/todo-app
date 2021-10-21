@@ -1,5 +1,5 @@
 import "./styles.css"
-export const Input = ({name, label, type, required, register, erros, validationSchema}) => {
+export const Input = ({name, label, type, required, register, errors, validationSchema}) => {
 
     return (
         <div className="form-control-input">
